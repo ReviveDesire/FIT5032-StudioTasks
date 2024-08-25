@@ -1,18 +1,41 @@
 <template>
   <!-- Using Bootstrap's Header template (starter code) -->
   <!-- https://getbootstrap.com/docs/5.0/examples/headers/ -->
-  <div class="container">
+  <div class=" container">
     <header class="d-flex justify-content-center py-3">
       <ul class="nav nav-pills">
         <li class="nav-item">
-          <a href="#" class="nav-link active" aria-current="page">Home (Week 4)</a>
+          <router-link to="/" class="nav-link" active-class="active" aria-current="page"
+            >Home (Week 5)</router-link>
         </li>
-        <li class="nav-item"><a href="#" class="nav-link">About</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">Contact us</a></li>
+        <li class="nav-item">
+          <router-link to="/about" class="nav-link" active-class="active">About</router-link>
+        </li>
+        <li class="nav-item" v-if="isAuthenticated">
+          <button class="nav-link" @click="handleLogout">Logout</button>
+          
+        </li>
+        <li class="nav-item" v-else>
+          <router-link to="/login" class="nav-link" active-class="active">Login</router-link>
+        </li>
       </ul>
     </header>
   </div>
 </template>
+
+<script setup>
+import { useRouter } from 'vue-router';
+import { isAuthenticated, logout } from '@/store';
+
+const router = useRouter();
+
+const handleLogout = () => {
+  logout();
+  router.push({ name: 'Login' });
+};
+
+</script>
+
 
 <style scoped>
 .b-example-divider {

@@ -52,7 +52,7 @@ const greenMessage = ref({
 
 const validateReason = (blur) => {
   const reason = formData.value.reason
-  const hasMessage = /friend/.test(reason)
+  const hasMessage = /friend/i.test(reason)
   if (formData.value.reason.length < 10) {
     if (blur) errors.value.reason = 'Reason must be at least 10 characters'
   } else {
@@ -103,7 +103,7 @@ const validateConfirmPassword = (blur) => {
 
 <template>
   <!-- 🗄️ W3. Library Registration Form -->
-  <div class="container mt-5">
+  <div class="mt-5 container">
     <div class="row">
       <div class="col-md-8 offset-md-2">
         <h1 class="text-center">🗄️ W5. Library Registration Form</h1>
@@ -155,6 +155,7 @@ const validateConfirmPassword = (blur) => {
                 class="form-control"
                 id="confirm-password"
                 @blur="() => validateConfirmPassword(true)"
+                @input="() => validateConfirmPassword(true)"
                 v-model="formData.confirmPassword"
               />
               <div v-if="errors.password" class="text-danger">{{ errors.confirmPassword }}</div>
@@ -239,13 +240,6 @@ const validateConfirmPassword = (blur) => {
 </template>
 
 <style scoped>
-/* .container {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  max-width: 80vw;
-  margin: 0 auto;
-  padding: 20px;
-  border-radius: 10px;
-} */
 
 /* Class selectors */
 .form {
