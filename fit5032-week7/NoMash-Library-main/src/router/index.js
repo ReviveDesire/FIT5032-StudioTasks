@@ -13,7 +13,14 @@ import UserDashboardView from '../views/UserDashboardView.vue';
 
 import LogoutView from '../views/LogoutView.vue';
 
+import AddBookView from '../views/AddBookView.vue';
+
 const routes = [
+  {
+    path: '/addbook',
+    name: 'AddBook',
+    component: AddBookView
+  },
   {
     path: '/logout',
     name: 'Logout',
