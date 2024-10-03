@@ -1,13 +1,15 @@
 <template>
   <div>
-    <h1>Books with ISBN > 1000</h1>
+    <!-- <h1>Books with ISBN > 1000</h1> -->
+    <h1>Books with ISBN</h1>
     <ul>
       <li v-for="book in books" :key="book.id">
-        <input
+        <!-- <input
           type="text"
           v-model="book.name"
           @blur="updateBook(book)"
-        />
+        /> -->
+        <span>- Book Name: {{ book.name }}</span>
         - ISBN: {{ book.isbn }}
         <button @click="deleteBook(book.id)">Delete</button>
       </li>
@@ -18,30 +20,29 @@
 <script>
 import { ref, onMounted } from 'vue';
 import db from '../firebase/init.js';
-import { collection, query, where, orderBy, limit, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { collection, query, where, orderBy, limit, onSnapshot, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 
 export default {
   setup() {
     const books = ref([]);
 
-    // Fetch books from Firestore using querying
-    const fetchBooks = async () => {
-      try {
-        const q = query(
-          collection(db, 'books'),
-          where('isbn', '>', 1000),
-          orderBy('isbn', 'asc'),  
-          limit(3)            
-        );
-        const querySnapshot = await getDocs(q);
+    // Fetch books from Firestore with real-time updates
+    const fetchBooks = () => {
+      const q = query(
+        collection(db, 'books'),
+        // where('isbn', '>', 1000),
+        orderBy('isbn', 'asc'),
+        limit(3)
+      );
+
+      // Use onSnapshot to get real-time updates
+      onSnapshot(q, (snapshot) => {
         const booksArray = [];
-        querySnapshot.forEach((doc) => {
+        snapshot.forEach((doc) => {
           booksArray.push({ id: doc.id, ...doc.data() });
         });
         books.value = booksArray;
-      } catch (error) {
-        console.error('Error fetching books: ', error);
-      }
+      });
     };
 
     // Update book name in Firestore

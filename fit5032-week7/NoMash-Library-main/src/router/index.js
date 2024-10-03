@@ -14,8 +14,14 @@ import UserDashboardView from '../views/UserDashboardView.vue';
 import LogoutView from '../views/LogoutView.vue';
 
 import AddBookView from '../views/AddBookView.vue';
+import GetBookCountView from '../views/GetBookCountView.vue';
 
 const routes = [
+  {
+    path: '/GetBookCount',
+    name: 'GetBookCount',
+    component: GetBookCountView
+  },
   {
     path: '/addbook',
     name: 'AddBook',
