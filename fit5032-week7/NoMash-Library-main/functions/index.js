@@ -30,3 +30,22 @@ exports.capitalizeBookEntry = onDocumentCreated('books/{bookId}', async (event) 
 
     return event.data.ref.update(capitalizedData);
 });
+
+// Function to get all books from Firestore
+exports.getAllBooks = onRequest(async (req, res) => {
+    cors(req, res, async () => {
+        try {
+            const booksCollection = admin.firestore().collection('books');
+            const snapshot = await booksCollection.get();
+            
+            // Extract data from Firestore documents
+            const books = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+            // Send back the list of books as JSON
+            res.status(200).json(books);
+        } catch (error) {
+            console.error('Error fetching books:', error);
+            res.status(500).send('Error fetching books');
+        }
+    });
+});
